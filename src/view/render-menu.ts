@@ -1,9 +1,9 @@
-import { convertOrderToTree, totalOrder } from "../node/ticket-node";
 import { pipe } from "fp-ts/lib/function";
-import { getRenderStrategy } from "./strategies/ticket-strategy/ticket-strategy";
-import { TreeNode } from "../interface/tree-node";
-import { Order } from "../data-generator/interface/interface";
+import { Matrix, TreeNode } from "../interface/tree-node";
+import { getRenderStrategy } from "./strategies/menu-strategy/menu-strategy";
 import { MonoidHtmlString } from "../util/monoids/monoids";
+import { convertMatrixToTree, convertMenuToMatrix } from "../node/menu-node";
+import { OrderItem } from "../data-generator/interface/interface";
 
 const renderNode = (node: TreeNode): string => {
     const strategy = getRenderStrategy(node);
@@ -11,21 +11,21 @@ const renderNode = (node: TreeNode): string => {
 };
 
 const appendChild = (childHtml: string) => (parentHtml: string) => parentHtml + childHtml;
-const wrapUl = (html: string) => `<ul>${html}</ul>`;
+const wrapDiv = (html: string) => `<div>${html}</div>`;
 const renderItemTree: (node: TreeNode) => string = (node) => {
     const renderChildren = node.childNodes
         ? pipe(
             node.childNodes.map(renderItemTree),
             (childStrings) => childStrings.reduce(MonoidHtmlString.concat, MonoidHtmlString.empty),
-            wrapUl,
+            wrapDiv,
         )
         : '';
     
     return appendChild(renderChildren)(renderNode(node));
 }
 
-export function generateOrderTreeHTML(order: Order) {
-    const tree: TreeNode = convertOrderToTree(order);
-    console.log(totalOrder(tree));
-    return wrapUl(renderItemTree(tree));
-}
+export const renderMenuItems = (menu: OrderItem[]) => pipe(
+    menu,
+    convertMenuToMatrix,
+    convertMatrixToTree
+)

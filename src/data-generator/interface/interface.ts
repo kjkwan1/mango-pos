@@ -23,6 +23,7 @@ export interface OrderItem {
     quantity: number;
     price: number;
     category: string;
+    subcategory: string;
     specialInstructions: string[];
     modifiers: ItemModifier[];
     childItems: OrderItem[];

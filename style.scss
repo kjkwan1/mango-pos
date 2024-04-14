@@ -27,7 +27,9 @@ body {
     height: 100%;
     margin: 0 auto;
     scrollbar-width: none;
-    font-family: 'Roboto' sans-serif;
+    font-family: 'Kanit' sans-serif;
+    letter-spacing: 0.12rem;
+    line-height: $line-height-base;
     overflow-y: scroll;
     position: relative;
 }
@@ -46,26 +48,37 @@ body {
     overflow-y: scroll;
     box-shadow: $card-shadow;
     height: 100vh;
+    position: relative;
   
     ul {
-      padding-left: 0.5rem;
+      padding-left: 1.5rem;
       list-style: none;
-      overflow-x: hidden;
+      overflow: hidden;
       text-overflow: ellipsis;
+      position: relative;
   
       li {
-        padding: 0.3rem;
+        padding: 1rem;
         display: flex;
+        font-size: $font-size-base;
   
         &:before {
-          content: '\021DB';
-          color: $color-white;
+          content: '';
+          color: rgba($color-white, 0.2);
           position: relative;
           top: 0;
-          left: -10px;
+          left: -100%;
           display: inline-block;
           width: 10px;
           height: 0;
+        }
+
+        &:after {
+          content: '';
+          border: 1px solid rgba($color-white, 0.2);
+          position: absolute;
+          left: 0;
+          height: 100%;
         }
       }
 
@@ -78,11 +91,15 @@ body {
       }
         
       li.modifier-node {
+        font-size: $font-size-small;
         background-color: rgba($color-secondary, 0.2);
+        font-style: italic;
       }
 
       li.discount-node {
+        font-size: $font-size-small;
         background-color: rgba($color-warn, 0.2);
+        font-style: italic;
       }
     }
 }
